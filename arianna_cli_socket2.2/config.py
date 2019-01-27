@@ -18,6 +18,7 @@ nome_ari=config.get('DEFAULT', 'nome_arianna')
 #parametri di configurazione fisica arianna
 
 
+        
 TCP_PORT=config.getint(nome_ari, 'TCP_PORT')
 UDP_PORT=config.getint(nome_ari, 'UDP_PORT')
 ostacolo_distanza=50
@@ -39,13 +40,18 @@ except:
     pass;
 try:
     if  config.get(nome_ari, 'diam_ruota')!='' :
-        temp=round(config.getint(nome_ari, 'diam_ruota')*3.14/(4*config.getint(nome_ari, 'encoderppr ')), 4)
+        temp=round(config.getint(nome_ari, 'diam_ruota')*3.14/(4*config.getint(nome_ari, 'encoderppr')), 4)
         comandi_ini.append('3F3'+str(temp)) 
 except:
     pass;
 try:
     if  config.get(nome_ari, 'K0')!='' :
         comandi_ini.append('3K0'+config.get(nome_ari, 'K0')) 
+except:
+    pass;
+try:
+    if  config.get(nome_ari, 'caricaini')!='1' :
+        comandi_ini.append('3E0') 
 except:
     pass;
 if (len(comandi_ini)>0):

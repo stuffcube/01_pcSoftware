@@ -5,11 +5,16 @@ Usage::
     ./server.py [<port>]
 """
 import threading
+import math
 from http.server import BaseHTTPRequestHandler, HTTPServer
 import config as cfg
 
 def dati():
     t='<head><META HTTP-EQUIV="refresh" CONTENT="2"></head>'
+    ang=cfg.posatt[4]
+    ang=float(cfg.posatt[4])
+    ang=math.degrees(ang)
+    ang=str(ang)
     if cfg.stato[0]!=0:
         t+='<body bgcolor="red">'
     else:
@@ -20,7 +25,10 @@ def dati():
     t+='<td>posx</td><td>posy</td><td>ang</td>'
     t+='</tr>'
     t+='<tr>'
-    t+='<td>'+str(int(float(cfg.posatt[2])))+'</td><td>'+str(int(float(cfg.posatt[3])))+'</td><td>'+str(int(float(cfg.posatt[4])))+'</td>'
+    
+    
+    
+    t+='<td>'+str(int(float(cfg.posatt[2])))+'</td><td>'+str(int(float(cfg.posatt[3])))+'</td><td>'+ang+'</td>'
     t+='</tr>'
     t+='</table>'
     t+='</body>'

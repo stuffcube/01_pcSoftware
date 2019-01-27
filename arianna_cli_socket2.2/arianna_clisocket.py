@@ -59,6 +59,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ip=([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0])
 UDP_IP = ip
 soudp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
+print(cfg.UDP_PORT)
 soudp.bind((UDP_IP, cfg.UDP_PORT))
 
 
@@ -91,7 +92,6 @@ cont=0
 while attcom==0:
     
     if simu==0:
-        
         file=cfg.localpath+"\\simulatore.py"
         command1 = subprocess.Popen([sys.executable,file], shell=True)
         ipclient='127.0.0.1'
@@ -114,7 +114,7 @@ while attcom==0:
             simu=0
             print("vado in simulazione")
     elif simu==2:
-        ipclient="192.168.1.210"
+        ipclient="192.168.1.102"
         TCP_PORT = cfg.TCP_PORT
         BUFFER_SIZE = 256
         attcom=1
@@ -446,7 +446,7 @@ class elabora (threading.Thread):
                 destinazione[1][2]='3R4'
                 a[2]='3R4'
                 a[0]='3A'+str(ang)
-                if abs(math.degrees(float(cfg.posatt[4]))%360.0 - float(ang))>5.0:
+                if abs(math.degrees(float(cfg.posatt[4]))%360.0 - float(ang))>5.0 and dist>100:
                     b=['3A'+str(ang),'3R6','1r']
                     arianna_utility.elencocmd(b)
                     a[0]=''

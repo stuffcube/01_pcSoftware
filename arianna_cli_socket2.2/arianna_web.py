@@ -250,11 +250,11 @@ class Benvenuto:
         except:
             f=f.replace('c12*','')
         try:
-            f=f.replace('c13*',config.get(sezione,'tcp_port'))
+            f=f.replace('c13*',config.get(sezione,'udp_port'))
         except:
             f=f.replace('c13*','')
         try:
-            f=f.replace('c14*',config.get(sezione,'udp_port'))
+            f=f.replace('c14*',config.get(sezione,'tcp_port'))
         except:
             f=f.replace('c14*','')
         try:

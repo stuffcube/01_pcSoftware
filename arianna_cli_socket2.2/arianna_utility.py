@@ -62,7 +62,7 @@ def test_registrazione(tipo='timeout'):
                     s+='\n'
                     f.write(s)
                     cont+=1    
-            print(i)
+            
         f.close()
     if a!='':
         return a
@@ -71,7 +71,7 @@ def test_registrazione(tipo='timeout'):
 
 def prt(testo,dest,gui):
     if dest==0:
-        print(testo)
+        print("testo",testo)
     if dest==1:
         try:
             gui.aggiungi(testo+'\n')
@@ -825,7 +825,7 @@ def idmap():
 
 
 def gestiscirisp(stringa):
-    print(stringa)
+    
     #risposta=[]
     pezziok=[]
     pezziko=[]

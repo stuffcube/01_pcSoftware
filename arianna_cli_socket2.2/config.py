@@ -2,6 +2,10 @@
 Created on 02/ott/2017
 
 @author: a.airaghi
+08feb2019
+    test esistenza file cfg o creazione
+    
+
 11gen2019
     sistemazine e ordinamento parametri
 
@@ -10,8 +14,43 @@ import queue
 import os
 import configparser
 
-nome_ari=''
+
 config = configparser.ConfigParser()
+if os.path.exists('config.ini')==False:    #gestisco la mancanza del file ini
+    config.set('DEFAULT', 'nome_arianna', 'DEFAULT')
+    config.set('DEFAULT', 'caricaini', '0')
+    config.set('DEFAULT', 'tcp_port', '81')
+    config.set('DEFAULT', 'udp_port', '8888')
+    config.set('DEFAULT', 'invx', '1')
+    config.set('DEFAULT', 'angolo_radar', '2.5')
+    config.set('DEFAULT', 'errore_servo', '0')
+    config.set('DEFAULT', 'versoradar', 'sinistra')
+    with open('config.ini', 'w') as cf:
+        config.write(cf)
+else:                                   #gestisco tutti gli aggiornamenti
+    config.read('config.ini')           
+    sez=config.sections()
+    sez.append('DEFAULT')              
+    for s in sez:                                           #aggiungo se non esistono aggiorno solo default
+        if s=='DEFAULT':
+            config.set(s, 'p_web1', '8081')
+            config.set(s, 'p_web2', '8888')
+        else:
+            if config.has_option(s, 'p_web1')==False:
+                config.set(s, 'p_web1', '8081')
+            if config.has_option(s, 'p_web2')==False:
+                config.set(s, 'p_web2', '8888')
+    for s in sez:                                       #elimino inutili
+        if config.has_option(s, 'portaweb1')==True:
+            config.remove_option(s, 'portaweb1')  
+    with open('config.ini', 'w') as cf:
+        config.write(cf)
+
+    
+    
+
+nome_ari=''
+
 config.read('config.ini')
 nome_ari=config.get('DEFAULT', 'nome_arianna')
 
@@ -70,6 +109,8 @@ except:
 
 
 
+pweb1=config.get(nome_ari, 'p_web1')
+pweb2=config.get(nome_ari, 'p_web2')
 invx=config.getint(nome_ari, 'invx')  #mettere meno in caso di inversione destra e sinistra
 angolo_radar=config.getfloat(nome_ari, 'angolo_radar')
 errore_servo=config.getint(nome_ari, 'errore_servo')  #aggiusto angolo del servo in quanto non e' mai in asse perfetto con arianna

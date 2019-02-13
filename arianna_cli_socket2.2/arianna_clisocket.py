@@ -59,7 +59,7 @@ s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 ip=([l for l in ([ip for ip in socket.gethostbyname_ex(socket.gethostname())[2] if not ip.startswith("127.")][:1], [[(s.connect(('8.8.8.8', 53)), s.getsockname()[0], s.close()) for s in [socket.socket(socket.AF_INET, socket.SOCK_DGRAM)]][0][1]]) if l][0][0])
 UDP_IP = ip
 soudp = socket.socket(socket.AF_INET, socket.SOCK_DGRAM) 
-print(cfg.UDP_PORT)
+print("porta udp",cfg.UDP_PORT)
 soudp.bind((UDP_IP, cfg.UDP_PORT))
 
 
@@ -74,7 +74,7 @@ def ricerca_arianna(sock):
     try:
         data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
         print("ip",data,addr,cfg.nome_ari)
-        if str(data).find(cfg.nome_ari)<0:
+        if str(data.upper()).find(cfg.nome_ari)<0:
             print("arianna di un altro")
             return '0'
         return addr[0]
@@ -501,12 +501,12 @@ cfg.id_radar=arianna_utility.idmap()
 root = Tk()
 my_gui = arianna_gui.MyFirstGUI(root)
 
-thread1 = arianna_web.serverweb(1, "Thread-w1",8081)
+thread1 = arianna_web.serverweb(1, "Thread-w1",int(cfg.pweb1))
 thread2 = comunicazione_daari(2, "Thread-xari")
 thread3 = comunicazione_perari(2, "Thread-com1")
 thread4 = elabora(3, "Thread-ela1")
 thread5 = mappa(4, "Thread-map1")
-thread6 = arianna_webmon.serverwebmon(5, "web_mon",8888)
+thread6 = arianna_webmon.serverwebmon(5, "web_mon",int(cfg.pweb2))
 
 
 # Start new Threads

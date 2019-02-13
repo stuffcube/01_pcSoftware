@@ -58,7 +58,7 @@ class Benvenuto:
         return h
     cfg.exposed = True
     
-    def ini(self,invia='',nomearianna='',ed='',ed_base='',baseline='',diam_ruota='',encoderppr='',k0='',divisore_lidar='',ostacolo_distanza='',invx='',angolo_radar='',caricaini='',tcp_port='',udp_port='',errservo='',copia='',cancella=''):
+    def ini(self,invia='',nomearianna='',ed='',ed_base='',baseline='',diam_ruota='',encoderppr='',k0='',divisore_lidar='',ostacolo_distanza='',invx='',angolo_radar='',caricaini='',tcp_port='',udp_port='',errservo='',copia='',cancella='',p_web1='',p_web2=''):
         if cancella!='':
             config = configparser.ConfigParser()
             config.read('config.ini')
@@ -95,6 +95,8 @@ class Benvenuto:
             config=self.aggiungi_ini(config ,nomearianna,'TCP_PORT',tcp_port)
             config=self.aggiungi_ini(config ,nomearianna,'UDP_PORT',udp_port)
             config=self.aggiungi_ini(config ,nomearianna,'errore_servo',errservo)
+            config=self.aggiungi_ini(config ,nomearianna,'p_web1',p_web1)
+            config=self.aggiungi_ini(config ,nomearianna,'p_web2',p_web2)
 
             
             
@@ -261,6 +263,14 @@ class Benvenuto:
             f=f.replace('c15*',config.get(sezione,'errore_servo'))
         except:
             f=f.replace('c15*','')
+        try:
+            f=f.replace('c16*',config.get(sezione,'p_web1'))
+        except:
+            f=f.replace('c16*','')
+        try:
+            f=f.replace('c17*',config.get(sezione,'p_web2'))
+        except:
+            f=f.replace('c17*','')
         return f
         
         

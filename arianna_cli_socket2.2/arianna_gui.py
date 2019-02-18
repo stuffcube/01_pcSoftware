@@ -8,7 +8,10 @@ import config as cfg
 from tkinter import  Button,Text,END,scrolledtext,NE
 import time
 import arianna_utility
+import urllib3
 
+headers = {"User-agent": "Mozilla/5.0"}
+http = urllib3.PoolManager()
 
 #===============================================================================
 # gui
@@ -49,10 +52,17 @@ class MyFirstGUI:
     
     def clicked(self):
         #messagebox.showinfo( "Hello Python", self.comandi.get("1.0",END))
-        if self.comandi.get("1.0",END)[:2]!='1i':
-            cfg.messaggirx.put((time.time(),self.comandi.get("1.0",END)))
-        else:
-            arianna_utility.registratore(self.comandi.get("1.0",END)[2:])
+        #=======================================================================
+        # if self.comandi.get("1.0",END)[:2]!='1i':
+        #     cfg.messaggirx.put((time.time(),self.comandi.get("1.0",END)))
+        # else:
+        #     arianna_utility.registratore(self.comandi.get("1.0",END)[2:])
+        #=======================================================================
+        a=time.time()
+        print (a)
+        r = http.request('GET', 'http://127.0.0.1:8081/comandi_ui?nome=''&valore=1&cod='+self.comandi.get("1.0",END).rstrip())
+        print(r.data)
+        print (time.time()-a)
 
 
 

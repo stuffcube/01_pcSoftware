@@ -157,7 +157,7 @@ class Benvenuto:
                 print("id radar",cfg.id_radar)
             return cmd
             
-        if str(cod)!='' and str(cod) != "None":
+        if str(cod)!='' and str(cod) != "None" :
             print("cod",cod)
             if cod[0:1]=='9':
                 p=cod[2:999].split('|')
@@ -185,7 +185,7 @@ class Benvenuto:
                     print("i",i)
                     cfg.messaggirx.put((time.time(),i))
                 
-        #return testo
+        return 'pippo'
     comandi_ui.exposed=True
 
     def bottonemov(self,dato):

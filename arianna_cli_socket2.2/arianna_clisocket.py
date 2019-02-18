@@ -48,6 +48,7 @@ import math
 import arianna_gui
 import sys
 import webbrowser
+from subprocess import Popen,PIPE
 #import navigazione as navi
 
 statosmf = threading.Semaphore()  #semaforo globale
@@ -70,17 +71,38 @@ datipostxt.close()
 
 #ipclient= '192.168.88.129'
 def ricerca_arianna(sock):
-    sock.settimeout(3.0)
+    sock.settimeout(2.0)
     try:
         data, addr = sock.recvfrom(1024) # buffer size is 1024 bytes
         print("ip",data,addr,cfg.nome_ari)
-        if str(data.upper()).find(cfg.nome_ari)<0:
+        if str(data.upper()).find(cfg.nome_ari.upper())<0:
             print("arianna di un altro")
-            return '0'
+            return 0
         return addr[0]
     except:
         print("non trovo arianna")
-        return '0'
+    ##provo con il dns 
+    try:
+        ip=socket.gethostbyname(cfg.nome_ari)
+        print(ip)
+        return ip
+    except:
+        print("non trovo arianna")   
+    try:
+        ip=socket.gethostbyname(cfg.nome_ari)
+        print(ip)
+        return ip
+    except:
+        print("non trovo arianna")  
+    #alla fine vado di ping
+    p = Popen("ping -n 1 "+cfg.nome_ari,stdout = PIPE)
+    output,err = p.communicate("")
+    output=str(output)
+    if output.find('[')<0:
+        return 0
+    else:
+        return (output[output.find('[')+1:output.find(']')]) 
+
 
 
 
@@ -103,7 +125,7 @@ while attcom==0:
         ipclient=''
         print("cerco arianna")
         a=ricerca_arianna(soudp)
-        if len(a)>6:
+        if a!=0:
             ipclient=a
             attesa_arianna=0
             TCP_PORT = cfg.TCP_PORT
@@ -292,7 +314,7 @@ class comunicazione_perari (threading.Thread):
                 except:
                     print("errore coda mov")
                 
-                time.sleep(2)
+                time.sleep(0.2)
 
                 
             time.sleep(0.1)

@@ -106,7 +106,7 @@ def ricerca_arianna(sock):
 
 
 
-simu=1
+simu=2
 if cfg.nome_ari=='DEFAULT':
     simu=0
 attcom=0
@@ -136,7 +136,7 @@ while attcom==0:
             simu=0
             print("vado in simulazione")
     elif simu==2:
-        ipclient="192.168.1.102"
+        ipclient="192.168.1.172"
         TCP_PORT = cfg.TCP_PORT
         BUFFER_SIZE = 256
         attcom=1

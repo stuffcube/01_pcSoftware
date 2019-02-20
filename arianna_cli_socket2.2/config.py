@@ -111,6 +111,14 @@ except:
 
 pweb1=config.get(nome_ari, 'p_web1')
 pweb2=config.get(nome_ari, 'p_web2')
+gui=open("scheda/arianna5.0.save","r")
+guif=gui.read()
+print("pweb2",pweb2)
+guif=guif.replace("8xx8",pweb2)
+gui=open("scheda/arianna5.0.html","w")
+gui.write(guif)
+gui.close()
+
 invx=config.getint(nome_ari, 'invx')  #mettere meno in caso di inversione destra e sinistra
 angolo_radar=config.getfloat(nome_ari, 'angolo_radar')
 errore_servo=config.getint(nome_ari, 'errore_servo')  #aggiusto angolo del servo in quanto non e' mai in asse perfetto con arianna

@@ -169,7 +169,6 @@
 		
 
 		function addProduct(name,price,cod){
-			//alert(cod);
 			function add(){
 				if (name!=null)
 				{
@@ -218,23 +217,19 @@
 			//per ogni elemento del carrelo invia i comandi sequenzialmente
 
 			for(var i=0; i<data.total; i++){
-					//sleepFor( 500);
 					var row = data.rows[i];
-					//alert(row.name);
-					//alert(row.price);
 					if (row.name!="esegui") 
 						{
-					//$.post("comandi_ui",
-					$.head("comandi_ui",
+					$.post("comandi_ui",
+
 							    {
 							        nome: row.name,
 							        valore: row.price,
 							        cod: row.cod
 							    },
-							    //function(data, status){
-							        //alert("Data: " + data + "\nStatus: " + status);
-							    //}
-							    );
+							    ).done(function( data ) {
+   							 
+  							});
 						}
 	
 			}
@@ -250,15 +245,46 @@
 	    function cambiavalore3(nome,valore) {
 	        document.getElementById(nome+'cmd').value='3A'+valore+'|3D0|3R6|1r'; 
 	    }
-	    function cambiavalore2(nome,valore) {
-	        document.getElementById(nome+'cmd').value=valore; 
+	    function cambiavaloreradar(nome)
+	    {
+	        document.getElementById(nome+'cmd').value='1q'+document.getElementById('radartxt').value+"+";
+	        document.getElementById(nome+'cmd').value+=document.getElementById('radartxt2').value+"+";
+	        document.getElementById(nome+'cmd').value+=document.getElementById('radartxt3').value;
+	    }
+	    
+	    
+	    function cambiavaloretgt(nome) {
+	        document.getElementById(nome+'cmd').value='9T'+document.getElementById('targettxt').value+"|";
+	        document.getElementById(nome+'cmd').value+=""+document.getElementById('targettxt2').value+"|";
+	        document.getElementById(nome+'cmd').value+="3R"+document.getElementById('targettxt3').value+"|1r";
 	    }
 	    
 	    function cambiavaloremov(nome,valore) {
-	    //T3A&ang|3D&dist|3R&mov|1r
-	        document.getElementById(nome+'cmd').value='T3A'+document.getElementById('movimentoangtxt').value+"|";
+	    	 document.getElementById(nome+'cmd').value='T';
+
+	    	
+	        document.getElementById(nome+'cmd').value+='3A'+document.getElementById('movimentoangtxt').value+"|";
 	        document.getElementById(nome+'cmd').value+="3D"+document.getElementById('movimentodsttxt').value+"|";
-	        document.getElementById(nome+'cmd').value+="3R"+document.getElementById('movimentotipotxt').value+"|1r";
+	        document.getElementById(nome+'cmd').value+="3R"+document.getElementById('movimentotipotxt').value+"|";
+	    	if (document.getElementById('movimentotipotxt').value=='1' || document.getElementById('movimentotipotxt').value=='3')
+	    	{
+	    	document.getElementById('movimentodistotxt').hidden=false;
+	    	document.getElementById('lbldisto').hidden=false;
+	    	document.getElementById('movimentopantxt').hidden=false;
+	    	document.getElementById('lblpan').hidden=false;
+	    	
+	    	document.getElementById(nome+'cmd').value+='3P'+document.getElementById('movimentopantxt').value+"|";
+	        document.getElementById(nome+'cmd').value+='O0'+document.getElementById('movimentodistotxt').value+"|";
+	        
+	    	}
+	    	else
+	    	{
+	    	document.getElementById('movimentodistotxt').hidden=true;
+	    	document.getElementById('lbldisto').hidden=true;
+	    	document.getElementById('lblpan').hidden=true;
+	    	document.getElementById('movimentopantxt').hidden=true;
+	    	}
+	    	document.getElementById(nome+'cmd').value+="1r"
 	    }
 	    
 	    
@@ -290,6 +316,7 @@
 	    	}
 
 	    	$("#salvacmd")[0].value=pezzo4;
+	    	document.getElementById("salvamsg").value="salvato";
 	    }
 
 	    
@@ -298,21 +325,7 @@
 	<script>
 
 	
-	/*(function poll() {
-	    setTimeout(function() {
-	        $.ajax({
-	            url: "risposte",
-	            type: "GET",
-	            success: function(responseText) {
 
-	                document.getElementById("result").value=responseText;
-	            },
-	            dataType: "text",
-	            complete: poll,
-	            timeout: 500
-	        })
-	    }, 3000);
-	})();*/
 	</script>
 
 </head>
@@ -332,7 +345,7 @@
 				<input  type="number"  id="movimentoangtxt"  value="0"  oninput="cambiavaloremov('movimento',document.getElementById('movimentotipotxt').value)"/>
 			<br>
 			<label >tpm</label>
-				<select id="movimentotipotxt" onchange="cambiavaloremov('movimento',document.getElementById('movimentotipotxt').value)"/>
+				<select id="movimentotipotxt" onchange="cambiavaloremov('movimento','tipo')"/>
 				<option value=""></option>
 				<option value="1">R1</option>
 				<option value="2">R2</option>
@@ -342,24 +355,16 @@
 				<option value="6">R6</option>
 				</select>
 				<br>
+			
 
 			<label >dist</label><input  type="number"  id="movimentodsttxt"  value="1" oninput="cambiavaloremov('movimento',document.getElementById('movimentotipotxt').value)"/></div>
+			<label id='lblpan' hidden>pan</label><input hidden type="number"  id="movimentopantxt"  value="60" oninput="cambiavaloremov('movimento','')"/></div>
+			<br><label id='lbldisto' hidden>ost</label><input hidden type="number"  id="movimentodistotxt"  value="60" oninput="cambiavaloremov('movimento','')"/></div>
 			
 			
 			<div class="valore1"><input hidden id="movimentocmd"  value="T3A0|3D0|3R1|1r" /></div>
 		</li>
 		
-		<li>
-			<a href="#" class="item">
-				<img src="images/go-up.png" height="50" width="50"/>
-				<div  >
-					<p>Prosegui</p>
-				</div>
-			
-			</a>
-			<div class="valore1"><input type="number" id="Proseguitxt" size="4" value="0" oninput="cambiavalore1('Prosegui',this.value)" /></div>
-			<div class="valore1"><input hidden  id="Proseguicmd"  value="3R4|1r" /></div>
-		</li>
 		<li>
 			<a href="#" class="item">
 				<img src="images/ruotasusestesso.jpg" height="50" width="50"/>
@@ -371,16 +376,7 @@
 			<div class="valore1"><input type="number" id="Ruotar6txt" size="4" value="0" oninput="cambiavalore3('Ruotar6',this.value)" /></div>
 			<div class="valore1"><input hidden  id="Ruotar6cmd"  value="3A0|3D1|3R6|1r" /></div>
 		</li>
-		<li>
-			<a href="#" class="item">
-				<img src="images/go-jump.png" height="50" width="50"/>
-				<div>
-					<p>ruota</p>
-				</div>
-			</a>
-			<div class="valore1"><input type="number"  id="ruotatxt"  value="0" oninput="cambiavalore2('ruota','3A'+this.value)" /></div>
-			<div class="valore1"><input hidden id="ruotacmd"  value="3A0" = /></div>
-		</li>
+		
 		
 		<li>
 			<a href="#" class="item">
@@ -410,10 +406,10 @@
 					<p>radar</p>
 				</div>
 			</a>
-			<div class="valore1"><label >in</label><input  type="number"  id="radartxt"  value="0"  oninput="cambiavalore2('radar','1q'+document.getElementById('radartxt').value+'+'+document.getElementById('radartxt2').value+'+'+document.getElementById('radartxt3').value)"/>
-			<br><label >fi</label><input  type="number"  id="radartxt2"  value="0"  oninput="cambiavalore2('radar','1q'+document.getElementById('radartxt').value+'+'+document.getElementById('radartxt2').value+'+'+document.getElementById('radartxt3').value)"/>
-			<br><label >st</label><input  type="number"  id="radartxt3"  value="1" oninput="cambiavalore2('radar','1q'+document.getElementById('radartxt').value+'+'+document.getElementById('radartxt2').value+'+'+document.getElementById('radartxt3').value)"/></div>
-			<div class="valore1"><input hidden id="radarcmd"  value="1q0+0+1"  /></div>
+			<div class="valore1"><label >in</label><input  type="number"  id="radartxt"  value="0"  oninput="cambiavaloreradar('radar')"/>
+			<br><label >fi</label><input  type="number"  id="radartxt2"  value="0"  oninput="cambiavaloreradar('radar')"/>
+			<br><label >st</label><input  type="number"  id="radartxt3"  value="1" oninput="cambiavaloreradar('radar')"/></div>
+			<div class="valore1"><input  hidden id="radarcmd"  value="1q0+0+1"  /></div>
 		</li>
 		<li>
 			<a href="#" class="item">
@@ -422,10 +418,21 @@
 					<p>target</p>
 				</div>
 			</a>
-			<div class="valore1"><label >tgtx</label><input  type="number"  id="targettxt"  value="0"  oninput="cambiavalore2('target','9t'+document.getElementById('targettxt').value+'|'+document.getElementById('targettxt2').value)"/>
-			<br><label >tgty</label><input  type="number"  id="targettxt2"  value="0"  oninput="cambiavalore2('target','9t'+document.getElementById('targettxt').value+'|'+document.getElementById('targettxt2').value)"/>
+			<div class="valore1"><label >tgtx</label><input  type="number"  id="targettxt"  value="0"  oninput="cambiavaloretgt('target')"/>
+			<br><label >tgty</label><input  type="number"  id="targettxt2"  value="0"  oninput="cambiavaloretgt('target')"/>
+ 			<br><label >tpm</label>
+				<select id="targettxt3" onchange="cambiavaloretgt('target')"/>
+				<option value=""></option>
+				<option value="1">R1</option>
+				<option value="2">R2</option>
+				<option value="3">R3</option>
+				<option value="4">R4</option>
+				<option value="5">R5</option>
+				<option value="6">R6</option>
+				</select>
+				<br>          
            </div>
-			<div class="valore1"><input hidden  id="targetcmd"  value="9t0|0"  /></div>
+			<div class="valore1"><input hidden  id="targetcmd"  value="9t0|0|R4"  /></div>
 		</li>
 			<li>
 			<a href="#" class="item">
@@ -470,11 +477,12 @@
 		<li>
 			<a href="#" class="item">
 				<img src="images/document-save.png" height="50" width="50"/>
-				<div>
+				<div >
 					<p>salva</p>
 				</div>
 				<div class="valore1"><input hidden  type="text" id="salvatxt"  value="0" = /></div>
-				<div class="valore1"><input  hidden id="salvacmd" class="salvacmd"  value="0" = /></div>	
+				<div class="valore1"><input  hidden id="salvacmd" class="salvacmd"  value="0" = /></div>
+				<div class="valore1"><input  id="salvamsg" class="salvacmd"  size="4" value="vuoto" = /></div>	
 			</a>
 		</li>
 
@@ -495,7 +503,8 @@
 		</table>
 		</div>
 		<div style="background:#fff">
-		<textarea style="width:290px; height:50px;" id="result"></textarea> 
+		<!-- <textarea style="width:290px; height:50px;" id="result"></textarea>  -->
+		 <iframe id="result" src="http://127.0.0.1:8xx8/posizione"></iframe>
 		</div>
 		<p class="total"></p>
 		<h2><button onclick="salva_com()"  type="button">salva</button>

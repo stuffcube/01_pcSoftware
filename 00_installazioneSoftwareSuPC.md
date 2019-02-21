@@ -39,15 +39,19 @@ il 3.6 va sostituito dalla versione di python installata sul proprio computer, p
 
 ### modulo Sympy
 
-*pip3 install sympy*
+*pip3 install sympy* [info](https://www.sympy.org/en/index.html)
 
 ### modulo Numpy
 
-*pip3 install numpy*
+*pip3 install numpy* [info](http://www.numpy.org/)
 
 ### modulo Cherrypy
 
-*pip3 install cherrypy*
+*pip3 install cherrypy* [info](https://cherrypy.org/)
+
+### modulo Urllib3
+
+*pip3 install urllib3* [info](https://urllib3.readthedocs.io/en/latest/)
 
  
 

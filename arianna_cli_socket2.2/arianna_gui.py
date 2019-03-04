@@ -29,7 +29,7 @@ class MyFirstGUI:
         self.msglog2.pack()
         self.msglog3 = scrolledtext.ScrolledText(master, height=10, width=50)
         self.msglog3.pack()
-        self.comandi = Text(master, height=2, width=50)
+        self.comandi = Text(master, height=1, width=50)
         self.comandi.pack()
         self.inviacmd= Button(master,text='InviaCMD',command = self.clicked)
         self.inviacmd.pack()
@@ -37,6 +37,15 @@ class MyFirstGUI:
         self.btn2.pack()
         self.inviacmd.place(relx=1, x=-200, y=670, anchor=NE)
         self.btn2.place(relx=1, x=-100, y=670, anchor=NE)
+        #self.master.bind('<Return>', self.clicked2)
+        self.comandi.bind('<Return>',self.clicked)
+        if cfg.simu==0:
+            self.aggiungi2("mod simulazione")
+        if cfg.simu==1:
+            self.aggiungi2("mod normale")
+        if cfg.simu==2:
+            self.aggiungi2("ip statico")
+        
     
     def aggiungi(self,testo):
         self.msglog.insert(END, testo)
@@ -50,7 +59,7 @@ class MyFirstGUI:
         self.msglog3.see(END)
 
     
-    def clicked(self):
+    def clicked(self,evt):
         #messagebox.showinfo( "Hello Python", self.comandi.get("1.0",END))
         #=======================================================================
         # if self.comandi.get("1.0",END)[:2]!='1i':
@@ -62,7 +71,12 @@ class MyFirstGUI:
         print (a)
         r = http.request('GET', 'http://127.0.0.1:8081/comandi_ui?nome=''&valore=1&cod='+self.comandi.get("1.0",END).rstrip())
         print(r.data)
-        print (time.time()-a)
+        print (time.time())
+    
 
+        
+    
+    def start(self):
+        self.master.mainloop()
 
 

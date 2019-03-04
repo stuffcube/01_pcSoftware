@@ -57,7 +57,7 @@ nome_ari=config.get('DEFAULT', 'nome_arianna')
 #parametri di configurazione fisica arianna
 
 
-        
+simu=1       
 TCP_PORT=config.getint(nome_ari, 'TCP_PORT')
 UDP_PORT=config.getint(nome_ari, 'UDP_PORT')
 ostacolo_distanza=50
@@ -186,3 +186,5 @@ ang_prec_rel_ass=[]
 
 #impostazione path
 localpath=os.path.dirname(os.path.abspath(__file__))
+
+

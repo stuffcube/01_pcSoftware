@@ -47,6 +47,7 @@ import arianna_webmon
 import math
 import arianna_gui
 import sys
+import os
 import webbrowser
 from subprocess import Popen,PIPE
 #import navigazione as navi
@@ -106,21 +107,21 @@ def ricerca_arianna(sock):
 
 
 
-simu=2
+
 if cfg.nome_ari=='DEFAULT':
-    simu=0
+    cfg.simu=0
 attcom=0
 cont=0
 while attcom==0:
     
-    if simu==0:
+    if cfg.simu==0:
         file=cfg.localpath+"\\simulatore.py"
         command1 = subprocess.Popen([sys.executable,file], shell=True)
         ipclient='127.0.0.1'
         TCP_PORT = 8181
         BUFFER_SIZE = 256
         attcom=1
-    elif simu==1:
+    elif cfg.simu==1:
         
         ipclient=''
         print("cerco arianna")
@@ -133,10 +134,10 @@ while attcom==0:
             attcom=1
         cont+=1
         if cont>1:
-            simu=0
+            cfg.simu=0
             print("vado in simulazione")
-    elif simu==2:
-        ipclient="192.168.1.172"
+    elif cfg.simu==2:
+        ipclient="192.168.1.102"
         TCP_PORT = cfg.TCP_PORT
         BUFFER_SIZE = 256
         attcom=1
@@ -486,6 +487,8 @@ class elabora (threading.Thread):
         semaelabora.release()
 
 
+        
+
 class mappa (threading.Thread):
     def __init__(self, threadID, name):
         threading.Thread.__init__(self)
@@ -507,6 +510,8 @@ class mappa (threading.Thread):
                 cfg.time_radar=0    
             else:
                 time.sleep(0.1)
+
+        
             
 # **********param default****
 cfg.stato[0]=0
@@ -525,10 +530,17 @@ my_gui = arianna_gui.MyFirstGUI(root)
 
 thread1 = arianna_web.serverweb(1, "Thread-w1",int(cfg.pweb1))
 thread2 = comunicazione_daari(2, "Thread-xari")
-thread3 = comunicazione_perari(2, "Thread-com1")
-thread4 = elabora(3, "Thread-ela1")
-thread5 = mappa(4, "Thread-map1")
-thread6 = arianna_webmon.serverwebmon(5, "web_mon",int(cfg.pweb2))
+thread3 = comunicazione_perari(3, "Thread-com1")
+thread4 = elabora(4, "Thread-ela1")
+thread5 = mappa(5, "Thread-map1")
+thread6 = arianna_webmon.serverwebmon(6, "web_mon",int(cfg.pweb2))
+
+thread1.setDaemon(True)
+thread2.setDaemon(True)
+thread3.setDaemon(True)
+thread4.setDaemon(True)
+thread5.setDaemon(True)
+thread6.setDaemon(True)
 
 
 # Start new Threads
@@ -543,10 +555,17 @@ time.sleep(0.1)
 thread5.start()
 time.sleep(0.1)
 thread6.start()
+
+
+
 webbrowser.open('http://127.0.0.1:8081',new=0)
 #apro browser
-root.mainloop()
+
+
+#root.mainloop()
+my_gui.start()
 
 
 
-print ("Exiting Main Thread")
+
+

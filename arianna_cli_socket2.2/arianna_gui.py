@@ -9,6 +9,7 @@ from tkinter import  Button,Text,END,scrolledtext,NE
 import time
 import arianna_utility
 import urllib3
+from tkinter.constants import FIRST
 
 headers = {"User-agent": "Mozilla/5.0"}
 http = urllib3.PoolManager()
@@ -58,8 +59,8 @@ class MyFirstGUI:
         self.msglog3.insert(END, testo)
         self.msglog3.see(END)
 
-    
-    def clicked(self,evt):
+            
+    def clicked(self,evt=''):
         #messagebox.showinfo( "Hello Python", self.comandi.get("1.0",END))
         #=======================================================================
         # if self.comandi.get("1.0",END)[:2]!='1i':
@@ -67,14 +68,15 @@ class MyFirstGUI:
         # else:
         #     arianna_utility.registratore(self.comandi.get("1.0",END)[2:])
         #=======================================================================
-        a=time.time()
-        print (a)
-        r = http.request('GET', 'http://127.0.0.1:8081/comandi_ui?nome=''&valore=1&cod='+self.comandi.get("1.0",END).rstrip())
+        b=self.comandi.get("1.0",END).rstrip()
+        b=b.strip('\n')
+        b=b.strip('\r')
+        a='http://127.0.0.1:8081/comandi_ui?nome=''&valore=1&cod='+b
+        print (a,"-")
+        r = http.request('GET',a )
+        self.comandi.delete("1.0", END)
+        self.comandi.focus()
         print(r.data)
-        print (time.time())
-    
-
-        
     
     def start(self):
         self.master.mainloop()

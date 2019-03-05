@@ -11,7 +11,7 @@ import time
 import statistics
 import string
 import arianna_gui
-
+import socket
 from sympy import Line,Point,Segment,Circle
 import numpy
 import operator as op
@@ -87,6 +87,16 @@ def prt(testo,dest,gui):
             gui.aggiungi3(testo+'\n')
         except:
             pass;
+    if dest==4:
+        sock2 = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+        server_address = ('localhost', 10000)
+        message = testo.encode()
+        try:
+            sent = sock2.sendto(message, server_address)
+        except:
+            pass;
+        sock2.close()
+        
 
 #*************************funzioni di movimento********************************************
 

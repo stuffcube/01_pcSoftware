@@ -210,6 +210,7 @@ class comunicazione_daari(threading.Thread):
         
         for m in mex[0]:
             arianna_utility.prt(str(m),3,my_gui)
+            arianna_utility.prt(str(m),4,my_gui)
             if m[0:3]=='scp' and m.find("=")>=0:
                 if m.split("=")[0].split(":")[1]=='statoScope':
                     if int(m.split('=')[1])==1:

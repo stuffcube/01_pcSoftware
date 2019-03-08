@@ -763,6 +763,7 @@ def controlla_new_pos(a, f):
     else:
         return True
 def deco_pos(a):
+    #print(str(a))
     pezzi=str(a).split(":")
     pezzi1=pezzi[1].split(";")
     pezzi1.append(0)
@@ -836,6 +837,34 @@ def idmap():
 
 def gestiscirisp(stringa):
     
+    #risposta=[]
+    pezziok=[]
+    pezziko=[]
+    if stringa==None or stringa=="":
+        return [pezziok,pezziko]
+    a=stringa.split("!")
+    numpz=len(a)
+    nn=1
+    for p in a:
+        p=p.strip()
+        p=p.replace(" ","")
+        cont=p.find("?")
+        if len(p)>200:
+            continue;
+        if cont<0 and nn<numpz:
+            pass
+        if cont>=0:
+            pezziok.append(p[0:cont])
+
+        if cont<0 and nn==numpz:
+            pezziko.append(p)
+
+        nn+=1
+    return [pezziok,pezziko]
+
+
+def gestiscirisp2(stringa):
+    #da rimovere
     #risposta=[]
     pezziok=[]
     pezziko=[]

@@ -192,7 +192,10 @@ class comunicazione_daari(threading.Thread):
         try:
             raw_bytestream = s.recv(BUFFER_SIZE)      #metto nella coda di ricezione le info di arduino
             #messaggio+=str(raw_bytestream)
-            messaggio+=raw_bytestream.decode("utf-8")
+            if messaggio!=None:
+                messaggio+=raw_bytestream.decode("utf-8")
+            else:
+                messaggio=raw_bytestream.decode("utf-8")
         except Exception as msg:
             if str(msg).find("[WinError 10035]")<0:
                 messaggio=''
@@ -278,6 +281,7 @@ class comunicazione_daari(threading.Thread):
                 #cfg.messaggiesprx.put(m)
         messaggio=''
         for m in mex[1]:
+            print("m",m)
             messaggio=messaggio+m
             return messaggio
 
@@ -316,7 +320,7 @@ class comunicazione_perari (threading.Thread):
                 except:
                     print("errore coda mov")
                 
-                time.sleep(0.2)
+                time.sleep(1)
 
                 
             time.sleep(0.1)
@@ -559,7 +563,7 @@ thread6.start()
 
 
 
-webbrowser.open('http://127.0.0.1:8081',new=0)
+#webbrowser.open('http://127.0.0.1:8081',new=0)
 #apro browser
 
 

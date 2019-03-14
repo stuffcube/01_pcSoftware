@@ -58,7 +58,7 @@ class Benvenuto:
         return h
     cfg.exposed = True
     
-    def ini(self,invia='',nomearianna='',ed='',ed_base='',baseline='',diam_ruota='',encoderppr='',k0='',divisore_lidar='',ostacolo_distanza='',invx='',angolo_radar='',caricaini='',tcp_port='',udp_port='',errservo='',copia='',cancella='',p_web1='',p_web2=''):
+    def ini(self,invia='',nomearianna='',ed='',ed_base='',baseline='',diam_ruota='',encoderppr='',k0='',divisore_lidar='',ostacolo_distanza='',invx='',angolo_radar='',caricaini='',tcp_port='',udp_port='',errservo='',copia='',cancella='',p_web1='',p_web2='',modoavvio='',guiweb='',guitk=''):
         if cancella!='':
             config = configparser.ConfigParser()
             config.read('config.ini')
@@ -97,6 +97,9 @@ class Benvenuto:
             config=self.aggiungi_ini(config ,nomearianna,'errore_servo',errservo)
             config=self.aggiungi_ini(config ,nomearianna,'p_web1',p_web1)
             config=self.aggiungi_ini(config ,nomearianna,'p_web2',p_web2)
+            config=self.aggiungi_ini(config ,nomearianna,'modoavvio',modoavvio)
+            config=self.aggiungi_ini(config ,nomearianna,'guiweb',guiweb)
+            config=self.aggiungi_ini(config ,nomearianna,'guitk',guitk)
 
             
             
@@ -114,8 +117,6 @@ class Benvenuto:
     
     def mappa(self):
         arianna_db.da_db_mappa()
-        #linee=arianna_db.leggosql([cfg.id_radar],"linee")
-        #arianna_utility.mappa_seg(cfg.mappa,"assoluta",linee)
         arianna_utility.mappa_seg(cfg.mappa,"assoluta",'')
         return open(cfg.localpath+'/scheda/mappasegok.html')
     mappa.exposed = True
@@ -185,7 +186,7 @@ class Benvenuto:
                     print("i",i)
                     cfg.messaggirx.put((time.time(),i))
                 
-        return 'pippo'
+        return ''
     comandi_ui.exposed=True
 
     def bottonemov(self,dato):
@@ -271,8 +272,19 @@ class Benvenuto:
             f=f.replace('c17*',config.get(sezione,'p_web2'))
         except:
             f=f.replace('c17*','')
+        try:
+            f=f.replace('c18*',config.get(sezione,'modoavvio'))
+        except:
+            f=f.replace('c18*','')
+        try:
+            f=f.replace('c19*',config.get(sezione,'guiweb'))
+        except:
+            f=f.replace('c19*','')
+        try:
+            f=f.replace('c20*',config.get(sezione,'guitk'))
+        except:
+            f=f.replace('c20*','')
         return f
-        
         
         
 

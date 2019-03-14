@@ -258,6 +258,8 @@ class comunicazione_daari(threading.Thread):
                             arianna_utility.prt("arianna ferma",2,my_gui)
                             cfg.stato[0]=0  #sblocco successivi movimenti
                             cfg.richieste_pos=[]
+                            if cfg.percorsi.empty()==True:
+                                arianna_utility.prt("arrivato",4,my_gui)
                 except:
                     pass;
                 cfg.messaggiesppos.put(m)
@@ -440,6 +442,7 @@ class elabora (threading.Thread):
             lavoro=cfg.messaggirx.get()
             cfg.messaggiesptx.put(lavoro[1])
        
+        
         if cfg.percorsi.empty()==False and cfg.messaggiesptx.empty()==True and cfg.stato[0]==0 and  cfg.time_radar!=1:
             
             destinazione=cfg.percorsi.get()
@@ -483,6 +486,7 @@ class elabora (threading.Thread):
             if (dist<=100 ):  #se la distanza è minore di 10 cm mi considero arrivato , mettere parametro?
                 cfg.stato[0]=0
                 cfg.tipo_moto=''
+                arianna_utility.prt("arrivato",4,my_gui)
 
             else:
                 cfg.percorsi.put(destinazione)
@@ -562,13 +566,17 @@ time.sleep(0.1)
 thread6.start()
 
 
-
-#webbrowser.open('http://127.0.0.1:8081',new=0)
+if cfg.guiweb==1:
+    webbrowser.open('http://127.0.0.1:8081',new=0)
 #apro browser
 
 
 #root.mainloop()
-my_gui.start()
+if cfg.guitk==1:
+    my_gui.start()
+else:
+    while 1:
+        pass
 
 
 

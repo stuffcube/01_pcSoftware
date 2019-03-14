@@ -25,6 +25,9 @@ if os.path.exists('config.ini')==False:    #gestisco la mancanza del file ini
     config.set('DEFAULT', 'angolo_radar', '2.5')
     config.set('DEFAULT', 'errore_servo', '0')
     config.set('DEFAULT', 'versoradar', 'sinistra')
+    config.set('DEFAULT', 'modoavvio', '1')
+    config.set('DEFAULT', 'guiweb', '1')
+    config.set('DEFAULT', 'guitk', '1')
     with open('config.ini', 'w') as cf:
         config.write(cf)
 else:                                   #gestisco tutti gli aggiornamenti
@@ -35,11 +38,20 @@ else:                                   #gestisco tutti gli aggiornamenti
         if s=='DEFAULT':
             config.set(s, 'p_web1', '8081')
             config.set(s, 'p_web2', '8888')
+            config.set(s, 'modoavvio', '1')
+            config.set(s, 'guiweb', '1')
+            config.set(s, 'guitk', '1')
         else:
             if config.has_option(s, 'p_web1')==False:
                 config.set(s, 'p_web1', '8081')
             if config.has_option(s, 'p_web2')==False:
                 config.set(s, 'p_web2', '8888')
+            if config.has_option(s, 'modoavvio')==False:
+                config.set(s, 'modoavvio', '1')
+            if config.has_option(s, 'guiweb')==False:
+                config.set(s, 'guiweb', '1')
+            if config.has_option(s, 'guitk')==False:
+                config.set(s, 'guitk', '1')
     for s in sez:                                       #elimino inutili
         if config.has_option(s, 'portaweb1')==True:
             config.remove_option(s, 'portaweb1')  
@@ -57,7 +69,7 @@ nome_ari=config.get('DEFAULT', 'nome_arianna')
 #parametri di configurazione fisica arianna
 
 
-simu=1       
+      
 TCP_PORT=config.getint(nome_ari, 'TCP_PORT')
 UDP_PORT=config.getint(nome_ari, 'UDP_PORT')
 ostacolo_distanza=50
@@ -106,7 +118,21 @@ try:
         comandi_ini.append('3O1'+config.get(nome_ari, 'ostacolo_distanza')) 
 except:
     ostacolo_distanza=50
-
+try:
+    if  config.get(nome_ari, 'modoavvio')!='' :
+        simu=config.getint(nome_ari, 'modoavvio')
+except:
+    simu=1
+try:
+    if  config.get(nome_ari, 'guiweb')!='' :
+        guiweb=config.getint(nome_ari, 'guiweb')
+except:
+    guiweb=1
+try:
+    if  config.get(nome_ari, 'guitk')!='' :
+        guitk=config.getint(nome_ari, 'guitk')
+except:
+    guitk=1
 
 
 pweb1=config.get(nome_ari, 'p_web1')
